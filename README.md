@@ -14,17 +14,17 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
 
     En primer lugar, iniciamos el sistema, accedemos con nuestro usuario y abrimos una terminal con la combinación de teclas *Ctrl + Alt + T*.
 
-    ![alt text](/imagenes1/image.png)
+    ![alt text](/imagenes2/image.png)
 
     Accedemos como superusuario al fichero de configuración de GRUB 2 con el siguiente comando:
 
         sudo nano /etc/default/grub
 
-    ![alt text](image-1.png)
+    ![alt text](/imagenes2/image-1.png)
 
     Modificamos el parámetro *GRUB_TIMEOUT=5* a *GRUB_TIMEOUT=0*, que es el tiempo que aparece en pantalla por defecto, así que, de esta forma, no aparecerá al arrancar el sistema.
 
-    ![alt text](image-2.png)
+    ![alt text](/imagenes2/image-2.png)
 
     Guardamos en nano con el atajo *Ctrl + O* y salimos con *Ctrl + X*
 
@@ -32,7 +32,7 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
 
         sudo update-grub
 
-    ![alt text](image-3.png)
+    ![alt text](/imagenes2/image-3.png)
 
 - **Asignar una contraseña de arranque**
 
@@ -42,19 +42,19 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
 
     Primero, creamos un hash con la contraseña a nuestra elección y guardamos en el portapapeles el hash que nos genera para el GRUB.
 
-    ![alt text](image-4.png)
+    ![alt text](/imagenes2/image-4.png)
 
     Vamos al siguiente fichero mediante el comando:
 
         sudo nano /etc/grub.d/00_header
     
-    ![alt text](image-5.png)
+    ![alt text](/imagenes2/image-5.png)
 
     Añadimos los siguientes líneas al final del archivo y guardamos con *Ctrl + O* y salimos de nano con *Ctrol + X* .
 
     El superuser será el usuario a nuestra elección que exista en el sistema y el sha512 es el hash que generamos antes.
 
-    ![alt text](image-6.png)
+    ![alt text](/imagenes2/image-6.png)
 
     Actualizamos la configuración del GRUB
 
@@ -66,7 +66,7 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
 
     Al iniciarse el gestor de arranque, nos aparece la siguiente pantalla para introducir nuestro superusuario de GRUB y su contraseña y poder acceder.
 
-    ![alt text](image-7.png)
+    ![alt text](/imagenes2/image-7.png)
 
 - **Copia de seguridad**
 
@@ -81,7 +81,7 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
     
     Esto hará que creemos una copia del archivo original con otro nombre, es decir "grub.backup" en la misma carpeta.
 
-    ![alt text](image-8.png)
+    ![alt text](/imagenes2/image-8.png)
 
     En el siguiente paso, vamos a respaldar los scripts y configuraciones adicionals del GRUB.
 
@@ -89,13 +89,13 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
 
         sudo cp -r /etc/grub.d /etc/grub.d.backup
 
-    ![alt text](image-9.png)
+    ![alt text](/imagenes2/image-9.png)
 
     También podemos respaldar el archivo generado de configuración del GRUB.
 
         sudo cp /boot/grub/grub.cfg /boot/grub/grub.cfg.backup
     
-    ![alt text](image-10.png)
+    ![alt text](/imagenes2/image-10.png)
 
     Por último, si queremos restaurar todos estos archivos, ejecutamos los siguientes comandos.
 
@@ -118,18 +118,18 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
 
         sudo nano /etc/default/grub
 
-    ![alt text](image-11.png)
+    ![alt text](/imagenes2/image-11.png)
 
     Descomentamos la siguiente línea para desactivar el modo de recuperación:
 
         GRUB_DISABLE_RECOVERY="true"
 
-    ![alt text](image-12.png)
+    ![alt text](/imagenes2/image-12.png)
 
     Guardamos los cambios y actualizamos la configuración del GRUB.
 
         sudo update-grub
 
-    ![alt text](image-13.png)
+    ![alt text](/imagenes2/image-13.png)
 
     
