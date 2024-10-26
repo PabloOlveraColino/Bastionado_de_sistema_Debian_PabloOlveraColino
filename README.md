@@ -14,7 +14,7 @@ Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir qu
 
     En primer lugar, iniciamos el sistema, accedemos con nuestro usuario y abrimos una terminal con la combinación de teclas *Ctrl + Alt + T*.
 
-    ![alt text](image.png)
+    ![alt text](/imagenes1/image.png)
 
     Accedemos como superusuario al fichero de configuración de GRUB 2 con el siguiente comando:
 
