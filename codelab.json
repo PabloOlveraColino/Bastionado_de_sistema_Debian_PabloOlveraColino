@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2024-10-30T10:17:31+01:00",
+  "id": "Bastionar_el_arranque_de_un_sistema_Debian",
+  "duration": 0,
+  "title": "Proyecto 1: Bastionado del arranque del sistema",
+  "summary": "Bastionado del arranque de un sistema Debian",
+  "source": "/home/pablo/CECEGS/Bastionado_Redes/Proyecto_1_Bastionado_del_arranque_del_sistema/Parte_2/Proyecto1.2.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "Un enlace en el que los usuarios puedan darte feedback (quizás creando un issue en un repositorio de git)",
+  "ga": "ID de Google Analytics",
+  "url": "Bastionar_el_arranque_de_un_sistema_Debian"
+}

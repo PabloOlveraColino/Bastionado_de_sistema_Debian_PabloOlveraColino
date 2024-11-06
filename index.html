@@ -1,0 +1,138 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Proyecto 1: Bastionado del arranque del sistema</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="ID de Google Analytics"
+                  id="Bastionar_el_arranque_de_un_sistema_Debian"
+                  title="Proyecto 1: Bastionado del arranque del sistema"
+                  environment="web"
+                  feedback-link="Un enlace en el que los usuarios puedan darte feedback (quizás creando un issue en un repositorio de git)">
+    
+      <google-codelab-step label="Introducción: Bastionar el arranque de un sistema Debian" duration="0">
+        <p>Bastionar el sistema de arranque de un sistema operativo, Ubuntu 20.04 en este caso, implica fortalecer la seguridad del proceso de arranque evitando que cualquiera pueda acceder al sistema, manipulen los archivos de arranque y modifiquen el sistema operativo.</p>
+<p>Vamos a realizar algunas configuraciones de seguridad en el GRUB para impedir que un actor malicioso pueda alterar la secuencia de arranque.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ocultar el arranque" duration="0">
+        <p>Es una técnica de bastionado que evita que los usuarios vean el menú de GRUB durante el inicio del sistema. Esto es útil cuando se desea impedir el acceso no autorizado a opciones avanzadas del sistema de arranque.</p>
+<p>En este apartado, exploraremos los pasos necesarios para ocultar el GRUB en Ubuntu 20.04.</p>
+<p>En primer lugar, iniciamos el sistema, accedemos con nuestro usuario y abrimos una terminal con la combinación de teclas <em>Ctrl + Alt + T</em>.</p>
+<p class="image-container"><img alt="alt text" src="img/b27c1819db5d6dd5.png"></p>
+<p>Accedemos como superusuario al fichero de configuración de GRUB 2 con el siguiente comando:</p>
+<pre><code>sudo nano /etc/default/grub
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/8c755394980fb9b9.png"></p>
+<p>Modificamos el parámetro <em>GRUB_TIMEOUT=5</em> a <em>GRUB_TIMEOUT=0</em>, que es el tiempo que aparece en pantalla por defecto, así que, de esta forma, no aparecerá al arrancar el sistema.</p>
+<p class="image-container"><img alt="alt text" src="img/c46ee00c395df9ad.png"></p>
+<p>Guardamos en nano con el atajo <em>Ctrl + O</em> y salimos con <em>Ctrl + X</em></p>
+<p>Aplicamos los cambios en el GRUB con el comando:</p>
+<pre><code>sudo update-grub
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/a66517077ff12af3.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Asignar una contraseña de arranque" duration="0">
+        <p>Al configurar una contraseña en GRUB, se restringe el acceso a opciones avanzadas del sistema, como el modo recuperación la edición de parámetros del kernel.</p>
+<p>Para poder establecer una contraseña de arranque, seguimos los siguientes pasos.</p>
+<p>Primero, creamos un hash con la contraseña a nuestra elección y guardamos en el portapapeles el hash que nos genera para el GRUB.</p>
+<p class="image-container"><img alt="alt text" src="img/80ddc65d1a15d8de.png"></p>
+<p>Vamos al siguiente fichero mediante el comando:</p>
+<pre><code>sudo nano /etc/grub.d/00_header
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/441f1eeb4dedc136.png"></p>
+<p>Añadimos los siguientes líneas al final del archivo y guardamos con <em>Ctrl + O</em> y salimos de nano con <em>Ctrol + X</em> .</p>
+<p>El superuser será el usuario a nuestra elección que exista en el sistema y el sha512 es el hash que generamos antes.</p>
+<p class="image-container"><img alt="alt text" src="img/5ae99b976e83df39.png"></p>
+<p>Actualizamos la configuración del GRUB</p>
+<pre><code>sudo update-grub
+</code></pre>
+<p>Y reiniciamos.</p>
+<pre><code>reboot
+</code></pre>
+<p>Al iniciarse el gestor de arranque, nos aparece la siguiente pantalla para introducir nuestro superusuario de GRUB y su contraseña y poder acceder.</p>
+<p class="image-container"><img alt="alt text" src="img/5408b492f09554af.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Copia de seguridad" duration="0">
+        <p>Hacer una copia de seguridad de la configuración del GRUB es una practica muy recomendada, especialmente si queremos realizar cambios importantes en la configuración de arranque.    Esto nos garantiza que podamos recuperar la información original de los ficheros de configuración del gestor de arranque en caso en que haya algún fallo crítico en el sistema.</p>
+<p>A continuación, indicamos los pasos a seguir para realizar copias de seguridad de los scripts y la configuración principal del GRUB.</p>
+<p>El primer paso es copiar la configuración principal del GRUB que se encuentra en el archivo <em>grub</em>.</p>
+<pre><code>sudo cp /etc/default/grub /etc/default/grub.backup
+</code></pre>
+<p>Esto hará que creemos una copia del archivo original con otro nombre, es decir &#34;grub.backup&#34; en la misma carpeta.</p>
+<p class="image-container"><img alt="alt text" src="img/dd665fdb0787d09a.png"></p>
+<p>En el siguiente paso, vamos a respaldar los scripts y configuraciones adicionals del GRUB.</p>
+<p>Ejecutamos el siguiente comando para realizar una copia completa de todo el contenido de <em>grub.d</em>.</p>
+<pre><code>sudo cp -r /etc/grub.d /etc/grub.d.backup
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/57639c92ab706bea.png"></p>
+<p>También podemos respaldar el archivo generado de configuración del GRUB.</p>
+<pre><code>sudo cp /boot/grub/grub.cfg /boot/grub/grub.cfg.backup
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/19e704b32bb1fa16.png"></p>
+<p>Por último, si queremos restaurar todos estos archivos, ejecutamos los siguientes comandos.</p>
+<pre><code>sudo cp /etc/default/grub.backup /etc/default/grub
+sudo cp -r /etc/grub.d.backup /etc/grub.d
+</code></pre>
+<p>Regeneramos el archivo de configuración <em>grub.cfg</em>:</p>
+<pre><code>sudo update-grub
+</code></pre>
+<p>Esto hará que se restaure toda la configuración a la versión de respaldo.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Deshabilitar el Modo de recuperación" duration="0">
+        <p>El modo de recuperación del GRUB nos permite acceder al sistema con privilegios de root, lo cual representa un grave riesgo de seguridad si algún agente malicioso quiere hacer modificaciones.</p>
+<p>Para hacerlo, tenemos que seguir los siguiente pasos.</p>
+<p>Editamos el archivo /etc/default/grub</p>
+<pre><code>sudo nano /etc/default/grub
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/d41fe0743b807992.png"></p>
+<p>Descomentamos la siguiente línea para desactivar el modo de recuperación:</p>
+<pre><code>GRUB_DISABLE_RECOVERY=&#34;true&#34;
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/1a2a9b123ea40c91.png"></p>
+<p>Guardamos los cambios y actualizamos la configuración del GRUB.</p>
+<pre><code>sudo update-grub
+</code></pre>
+<p class="image-container"><img alt="alt text" src="img/7b59618ec8a8d228.png"></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
